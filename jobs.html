@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Téléporteur</title>
+    <style>
+        /* Center form vertically and horizontally */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        
+        /* Set element sizes */
+        select {
+            height: 2em;
+            font-size: 1.2em;
+        }
+        button {
+            height: 2em;
+            font-size: 1.2em;
+        }
+        
+        /* Flat design style */
+        body {
+            background-color: #fafafa;
+            color: #333;
+            font-family: sans-serif;
+        }
+        select, button {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 0;
+            box-shadow: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            cursor: pointer;
+        }
+        select:focus, button:focus {
+            border-color: #B31B34;
+            outline: none;
+        }
+
+        #errorMessage {
+            color: red;
+            font-size: 1.2em;
+        }
+
+        #confirmButton {
+            background-color: #B31B34;
+            color: white;
+        }
+    </style>      
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://play.workadventu.re/iframe_api.js"></script>
+    <script>
+        /// <reference path="../node_modules/@workadventure/iframe-api-typings/iframe_api.d.ts" />
+        console.log('Jobs UI Website started successfully')
+
+        $(document).ready(() => {
+            const citiesArray = [
+                "NICE (06)", // 0
+                "MARSEILLE (13)", // 1
+                "BOURGES (18)", // 2
+                "DIJON (21)", // 3
+                "TOULOUSE (31)", // 4
+                "BORDEAUX (33)", // 5
+                "MONTPELLIER (34)", // 6
+                "RENNES (35)", // 7
+                "TOURS (37)", // 8
+                "BLOIS (41)", // 9
+                "NANTES (44)", // 10
+                "ORLEANS (45)", // 11
+                "LILLE (59)", // 12
+                "CLERMONT-FERRAND (63)", // 13
+                "LYON (69)", // 14
+                "PARIS (75)", // 15
+                "ROUEN (76)", // 16
+                "LIMOGES (87)", // 17
+                "MASSY (91)", // 18
+                "ANTONY (92)", // 19
+                "ALFORTVILLE (94)", // 20
+            ]
+
+            const jobsArray = [
+                "ACCEPTEUR DE RISQUES (ALTERNANCE)", // 0
+                "ANALYSTE COMPTABLE FISCAL (ALTERNANCE)", // 1
+                "ANALYSTE FINANCIER (ALTERNANCE)", // 2
+                "APPRENTI JURISTE (ALTERNANCE)", // 3
+                "ASSISTANT ACTUAIRE (ALTERNANCE)", // 4
+                "ASSISTANT COMMERCIAL (ALTERNANCE)", // 5
+                "ASSISTANT COMPTABLE (STAGE)", // 6
+                "ASSISTANT COMPTABLE (ALTERNANCE)", // 7
+                "ASSISTANT CONTROLE INTERNE (ALTERNANCE)", // 8
+                "ASSISTANT GESTIONNAIRE ASSURANCES (ALTERNANCE)", // 9
+                "ASSISTANT MARKETIN DIGITAL (ALTERNANCE)", // 10
+                "ASSISTANT MARKETING (ALTERNANCE)", // 11
+                "ASSISTANT MARKETING DIGITAL ET OPERATIONNEL (ALTERNANCE)", // 12
+                "ASSISTANT MARKETING OPERATIONNEL (ALTERNANCE)", // 13
+                "ASSISTANT MOA (ALTERNANCE)", // 14
+                "ASSISTANT SOUSCRIPTION (ALTERNANCE)", // 15
+                "CHARGE D'ETUDES STATISTIQUES (ALTERNANCE)", // 16
+                "CHARGE D'ETUDES TECHNIQUES (STAGE)", // 17
+                "CHARGE DE COMMUNICATION (ALTERNANCE)", // 18
+                "CHARGE DE COMMUNICATION DIGITALE (ALTERNANCE)", // 19
+                "CHARGE DE COMMUNICATION ET MARKETING (ALTERNANCE)", // 20
+                "CHARGE DE DEVELOPPEMENT COMMERCIAL (ALTERNANCE)", // 21
+                "CHARGE DE MARKETING DE L'OFFRE (ALTERNANCE)", // 22
+                "CHARGE DE MISSION EXPERIENCE CLIENTS (ALTERNANCE)", // 23
+                "CHARGE DE PROJET EVENEMENTIEL (ALTERNANCE)", // 24
+                "CHARGE DE PROMOTION (ALTERNANCE)", // 25
+                "CHARGEE DE MISSIONS RH (ALTERNANCE)", // 26
+                "CHEF DE PROJET (ALTERNANCE)", // 27
+                "COMMERCIAL APPELS SORTANTS (ALTERNANCE)", // 28
+                "DATA MANAGEMENT (ALTERNANCE)", // 29
+                "GESTIONNAIRE DE CONTRATS (ALTERNANCE)", // 30
+                "GESTIONNAIRE DE SINISTRES DOMMAGE AUX BIENS (ALTERNANCE)", // 31
+                "GESTIONNAIRE INDEMNISATION IARD (ALTERNANCE)", // 32
+                "GESTIONNAIRE INDEMNISATION RC MEDICALE (ALTERNANCE)", // 33
+                "GESTIONNAIRE INDEMNISATION SINISTRES (ALTERNANCE)", // 34
+                "GESTIONNAIRE SOUSCRIPTION ET VIE DES CONTRATS (ALTERNANCE)", // 35
+                "GESTIONNAIRE SOUSCRIPTION IARD (ALTERNANCE)", // 36
+                "JURISTE ACCES AU DROIT (STAGE)", // 37
+                "JURISTE GESTION DE DOSSIERS (STAGE)", // 38
+                "JURISTE INDEMNISATION SINISTRES (ALTERNANCE)", // 39
+                "JURISTE PROTECTION SOCIALE COMPLEMENTAIRE (ALTERNANCE)", // 40
+                "SOUSCRIPTEUR ASSURANCES DE PERSONNES (ALTERNANCE)", // 41
+                "SOUSCRIPTEUR COURTAGE (ALTERNANCE)", // 42
+                "FINANCE DURABLE (ALTERNANCE)", // 43
+                "RESPONSABILITE CIVILE MEDICALE (STAGE)", // 44
+                "TECHNICIEN DE MAINTENANCE INFORMATIQUE (ALTERNANCE)", // 45
+                "TECHNICO-COMMERCIAL (ALTERNANCE)", // 46
+            ]
+
+            const companiesArray = [
+                "L'AUXILIAIRE", // 0
+                "CAMCA", // 1
+                "FIDES SOLUTION", // 2
+                "LIBERTY SPECIALTY MARKETS", // 3
+                "RELYENS", // 4
+                "SMA BTP", // 5
+                "SOLUCIA", // 6
+            ]
+
+            // Data object with cities, jobs and companies
+            var data = {
+                "cities": [
+                    {
+                        "name": citiesArray[0],
+                        "jobs": [
+                            {
+                                "name": jobsArray[34],
+                                "companies": [companiesArray[5]]
+                            },
+                        ],
+                    },
+                    {
+                        "name": citiesArray[1],
+                        "jobs": [
+                            {
+                                "name": jobsArray[34],
+                                "companies": [companiesArray[5]]
+                            },
+                        ],
+                    },
+                    {
+                        "name": citiesArray[2],
+                        "jobs": [
+                            {
+                                "name": jobsArray[6],
+                                "companies": [companiesArray[4]]
+                            },
+                            {
+                                "name": jobsArray[7],
+                                "companies": [companiesArray[4]]
+                            },
+                            {
+                                "name": jobsArray[20],
+                                "companies": [companiesArray[4]]
+                            },
+                            {
+                                "name": jobsArray[28],
+                                "companies": [companiesArray[4]]
+                            },
+                        ],
+                    },
+                    {
+                        "name": citiesArray[3],
+                        "jobs": [
+                            {
+                                "name": jobsArray[34],
+                                "companies": [companiesArray[5]]
+                            },
+                        ],
+                    },
+                    {
+                        "name": citiesArray[4],
+                        "jobs": [
+                        {
+                                "name": jobsArray[34],
+                                "companies": [companiesArray[5]]
+                            },
+                        ],
+                    },
+                    {
+                        "name": citiesArray[5],
+                        "jobs": [
+                            {
+                                "name": jobsArray[0],
+                                "companies": [companiesArray[5]]
+                            },
+                            {
+                                "name": jobsArray[30],
+                                "companies": [companiesArray[5]]
+                            },
+                            {
+                                "name": jobsArray[34],
+                                "companies": [companiesArray[5]]
+                            },
+                        ],
+                    },
+                    {
+                        "name": citiesArray[6],
+                        "jobs": [
+                            {
+                                "name": jobsArray[34],
+                                "companies": [companiesArray[5]]
+                            },
+                        ],
+                    },
+                    {
+                        "name": citiesArray[7],
+                        "jobs": [
+                            {
+                                "name": jobsArray[30],
+                                "companies": [companiesArray[5]]
+                            },
+                            {
+                                "name": jobsArray[34],
+                                "companies": [companiesArray[5]]
+                            },
+                        ],
+                    },
+                    {
+                        "name": citiesArray[8],
+                        "jobs": [
+                            {
+                                "name": jobsArray[30],
+                                "companies": [companiesArray[5]]
+                            },
+                            {
+                                "name": jobsArray[39],
+                                "companies": [companiesArray[5]]
+                            },
+                        ],
+                    },
+                    {
+                        "name": citiesArray[9],
+                        "jobs": [
+                            {
+                                "name": jobsArray[31],
+                                "companies": [companiesArray[2]]
+                            },
+                            {
+                                "name": jobsArray[37],
+                                "companies": [companiesArray[2]]
+                            },
+                        ],
+                    },
+                    {
+                        "name": citiesArray[10],
+                        "jobs": [
+                            {
+                                "name": jobsArray[34],
+                                "companies": [companiesArray[5]]
+                            },
+                        ],
+                    },
+                    {
+                        "name": citiesArray[11],
+                        "jobs": [
+                            {
+                                "name": jobsArray[5],
+                                "companies": [companiesArray[4]]
+                            },
+                            {
+                                "name": jobsArray[8],
+                                "companies": [companiesArray[4]]
+                            },
+                            {
+                                "name": jobsArray[17],
+                                "companies": [companiesArray[4]]
+                            },
+                            {
+                                "name": jobsArray[21],
+                                "companies": [companiesArray[4]]
+                            },
+                            {
+                                "name": jobsArray[41],
+                                "companies": [companiesArray[4]]
+                            },
+                            {
+                                "name": jobsArray[46],
+                                "companies": [companiesArray[4]]
+                            },
+                        ],
+                    },
+                    {
+                        "name": citiesArray[12],
+                        "jobs": [
+                            {
+                                "name": jobsArray[34],
+                                "companies": [companiesArray[5]]
+                            },
+                        ],
+                    },
+                    {
+                        "name": citiesArray[13],
+                        "jobs": [
+                            {
+                                "name": jobsArray[30],
+                                "companies": [companiesArray[5]]
+                            },
+                            {
+                                "name": jobsArray[39],
+                                "companies": [companiesArray[5]]
+                            },
+                        ],
+                    },
+                    {
+                        "name": citiesArray[14],
+                        "jobs": [
+                            {
+                                "name": jobsArray[0],
+                                "companies": [companiesArray[5]]
+                            },
+                            {
+                                "name": jobsArray[8],
+                                "companies": [companiesArray[4]]
+                            },
+                            {
+                                "name": jobsArray[10],
+                                "companies": [companiesArray[0]]
+                            },
+                            {
+                                "name": jobsArray[13],
+                                "companies": [companiesArray[0]]
+                            },
+                            {
+                                "name": jobsArray[18],
+                                "companies": [companiesArray[4]]
+                            },
+                            {
+                                "name": jobsArray[22],
+                                "companies": [companiesArray[4]]
+                            },
+                            {
+                                "name": jobsArray[23],
+                                "companies": [companiesArray[4]]
+                            },
+                            {
+                                "name": jobsArray[27],
+                                "companies": [companiesArray[4]]
+                            },
+                            {
+                                "name": jobsArray[29],
+                                "companies": [companiesArray[4]]
+                            },
+                            {
+                                "name": jobsArray[43],
+                                "companies": [companiesArray[0]]
+                            },
+                            {
+                                "name": jobsArray[30],
+                                "companies": [companiesArray[5]]
+                            },
+                            {
+                                "name": jobsArray[32],
+                                "companies": [companiesArray[4]]
+                            },
+                            {
+                                "name": jobsArray[33],
+                                "companies": [companiesArray[4]]
+                            },
+                            {
+                                "name": jobsArray[34],
+                                "companies": [companiesArray[5]]
+                            },
+                            {
+                                "name": jobsArray[35],
+                                "companies": [companiesArray[4]]
+                            },
+                            {
+                                "name": jobsArray[36],
+                                "companies": [companiesArray[4]]
+                            },
+                            {
+                                "name": jobsArray[40],
+                                "companies": [companiesArray[4]]
+                            },
+                            {
+                                "name": jobsArray[44],
+                                "companies": [companiesArray[4]]
+                            },
+                            {
+                                "name": jobsArray[42],
+                                "companies": [companiesArray[0]]
+                            },
+                        ],
+                    },
+                    {
+                        "name": citiesArray[15],
+                        "jobs": [
+                            {
+                                "name": jobsArray[1],
+                                "companies": [companiesArray[5]]
+                            },
+                            {
+                                "name": jobsArray[2],
+                                "companies": [companiesArray[5]]
+                            },
+                            {
+                                "name": jobsArray[3],
+                                "companies": [companiesArray[6]]
+                            },
+                            {
+                                "name": jobsArray[4],
+                                "companies": [companiesArray[1]]
+                            },
+                            {
+                                "name": jobsArray[9],
+                                "companies": [companiesArray[1]]
+                            },
+                            {
+                                "name": jobsArray[11],
+                                "companies": [companiesArray[1]]
+                            },
+                            {
+                                "name": jobsArray[12],
+                                "companies": [companiesArray[6]]
+                            },
+                            {
+                                "name": jobsArray[14],
+                                "companies": [companiesArray[1]]
+                            },
+                            {
+                                "name": jobsArray[15],
+                                "companies": [companiesArray[3]]
+                            },
+                            {
+                                "name": jobsArray[16],
+                                "companies": [companiesArray[5]]
+                            },
+                            {
+                                "name": jobsArray[18],
+                                "companies": [companiesArray[2]]
+                            },
+                            {
+                                "name": jobsArray[19],
+                                "companies": [companiesArray[5]]
+                            },
+                            {
+                                "name": jobsArray[24],
+                                "companies": [companiesArray[5]]
+                            },
+                            {
+                                "name": jobsArray[25],
+                                "companies": [companiesArray[5]]
+                            },
+                            {
+                                "name": jobsArray[26],
+                                "companies": [companiesArray[1]]
+                            },
+                            {
+                                "name": jobsArray[30],
+                                "companies": [companiesArray[5]]
+                            },
+                            {
+                                "name": jobsArray[31],
+                                "companies": [companiesArray[2]]
+                            },
+                            {
+                                "name": jobsArray[37],
+                                "companies": [companiesArray[2]]
+                            },
+                            {
+                                "name": jobsArray[38],
+                                "companies": [companiesArray[2]]
+                            },
+                            {
+                                "name": jobsArray[45],
+                                "companies": [companiesArray[2]]
+                            },
+                        ],
+                    },
+                    {
+                        "name": citiesArray[16],
+                        "jobs": [
+                            {
+                                "name": jobsArray[34],
+                                "companies": [companiesArray[5]]
+                            },
+                        ],
+                    },
+                    {
+                        "name": citiesArray[17],
+                        "jobs": [
+                            {
+                                "name": jobsArray[34],
+                                "companies": [companiesArray[5]]
+                            },
+                        ],
+                    },
+                    {
+                        "name": citiesArray[18],
+                        "jobs": [
+                            {
+                                "name": jobsArray[34],
+                                "companies": [companiesArray[5]]
+                            },
+                        ],
+                    },
+                    {
+                        "name": citiesArray[19],
+                        "jobs": [
+                            {
+                                "name": jobsArray[34],
+                                "companies": [companiesArray[5]]
+                            },
+                        ],
+                    },
+                    {
+                        "name": citiesArray[20],
+                        "jobs": [
+                            {
+                                "name": jobsArray[34],
+                                "companies": [companiesArray[5]]
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            // Populate city selector
+            var citySelect = $("#citySelect");
+            citySelect.append("<option>Toutes les villes</option>")
+            citiesArray.forEach((city) => {
+                citySelect.append("<option>" + city + "</option>")
+            })
+
+            // Populate job selector
+            var jobSelect = $("#jobSelect");
+            var jobSelectLabel = $("#jobSelectLabel");
+            jobSelect.append("<option>Tous les postes</option>")
+            jobsArray.forEach((job) => {
+                jobSelect.append("<option>" + job + "</option>")
+            })
+
+            // Populate company selector
+            var companySelect = $("#companySelect")
+            var companySelectLabel = $("#companySelectLabel")
+            companySelect.append("<option>Choisissez une entreprise</option>")
+            companiesArray.forEach((company) => {
+                companySelect.append("<option>" + company + "</option>")
+            })
+
+            var selectedCityJobs = []
+            var selectedJobCompanies = []
+
+            // Filter job selector based on city selection
+            citySelect.change(function() {
+                var selectedCity = $(this).val()
+                if (selectedCity === "Toutes les villes") {
+                    selectedCityJobs = data.cities.map(city => city.jobs).flat()
+                } else {
+                    const selectedCityObj = data.cities.find(city => city.name === selectedCity)
+                    selectedCityJobs = selectedCityObj && selectedCityObj.jobs ? selectedCityObj.jobs : undefined
+                }
+
+                if(selectedCityJobs) {
+                    $("#errorMessage").hide()
+                    jobSelect.empty()
+                    jobSelect.append("<option>Tous les postes</option>")
+                    selectedCityJobs.forEach((job) => {
+                        jobSelect.append("<option>" + job.name + "</option>")
+                    })
+                    jobSelect.change()
+                    jobSelectLabel.show()
+                    jobSelect.show()
+                    companySelectLabel.show()
+                    companySelect.show()
+                } else {
+                    $("#errorMessage").text("Il n'exise pas de postes pour la ville sélectionnée.")
+                    $("#errorMessage").show()
+                    jobSelect.hide()
+                    jobSelectLabel.hide()
+                    companySelect.hide()
+                    companySelectLabel.hide()
+                }
+            })
+
+            // Filter company selector based on job selection
+            jobSelect.change(function() {
+                var selectedJob = $(this).val()
+                if (selectedJob === "Tous les postes") {
+                    let allSelectedCompanies = selectedCityJobs.map(job => job.companies).flat()
+                    selectedJobCompanies = [...new Set(allSelectedCompanies)]
+                } else {
+                    const selectedJobObj = selectedCityJobs.find(job => job.name === selectedJob)
+                    selectedJobCompanies = selectedJobObj && selectedJobObj.companies ? selectedJobObj.companies : undefined
+                }
+
+                if(selectedJobCompanies) {
+                    $("#errorMessage").hide()
+                    companySelect.empty()
+                    selectedJobCompanies.forEach((company) => {
+                        companySelect.append("<option>" + company + "</option>")
+                    })
+                    companySelect.change()
+                    companySelectLabel.show()
+                    companySelect.show()
+                } else {
+                    $("#errorMessage").text("Il n'exise pas d'entreprises pour le poste sélectionné.")
+                    $("#errorMessage").show()
+                    companySelect.hide()
+                    companySelectLabel.hide()
+                }
+            })
+
+            companySelect.change(function() {
+                var selectedCompany = $(this).val()
+                if (companiesArray.includes(selectedCompany)) {
+                    $("#confirmButton").show()
+                } else {
+                    $("#confirmButton").hide()
+                }
+            })
+
+            $("#confirmButton").click(function() {
+                var selectedCompany = $("#companySelect").val()
+                if (companiesArray.includes(selectedCompany)) {
+                    const anchor = companiesArray.indexOf(selectedCompany)
+                    //WA.nav.goToRoom("#" + anchor)
+                    WA.nav.goToPage("https://play.workadventu.re/@/roam/metavers/metassur2/#" + anchor)
+                } else {
+                    $("#errorMessage").text("Une erreur est survenue.")
+                    $("#errorMessage").show()
+                }
+              
+            })
+        })
+    </script>
+</head>
+<body>
+    <div class="container">
+        <form>
+            <h2>Touvez le stand fait pour vous !</h2>
+
+            <p id="errorMessage" style="display: none;"></p>
+
+            <p>Pour quelle ville cherchez-vous un poste ?</p>
+            <select id="citySelect"></select>
+
+            <p id="jobSelectLabel" style="display: none;">Quel poste cherchez-vous ?</p>
+            <select id="jobSelect" style="display: none;"></select>
+        
+            <p id="companySelectLabel">Quelle entreprise vous correspond ?</p>
+            <select id="companySelect"></select>
+        
+            <button id="confirmButton" type="button" style="display: none;">Se téléporter</button>
+        </form>
+      </div>
+</body>
+</html>
