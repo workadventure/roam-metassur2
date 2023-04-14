@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Téléporteur</title>
+    <title>Guide</title>
     <style>
         /* Center form vertically and horizontally */
         .container {
@@ -603,6 +603,16 @@
                 }
             })
 
+            const companyCoord = [
+                [5045, 1202],
+                [5111, 1993],
+                [5758, 2443],
+                [6389, 2847],
+                [7609, 2805],
+                [8463, 2158],
+                [8486, 1293],
+            ]
+
             // Filter company selector based on job selection
             jobSelect.change(function() {
                 var selectedJob = $(this).val()
@@ -644,8 +654,9 @@
                 var selectedCompany = $("#companySelect").val()
                 if (companiesArray.includes(selectedCompany)) {
                     const anchor = companiesArray.indexOf(selectedCompany)
+                    WA.player.moveTo(companyCoord[anchor][0], companyCoord[anchor][1], 13)
                     //WA.nav.goToRoom("#" + anchor)
-                    WA.nav.goToPage("https://play.workadventu.re/@/roam/metavers/metassur2#" + anchor)
+                    //WA.nav.goToPage("https://play.workadventu.re/@/roam/metavers/metassur2#" + anchor)
                 } else {
                     $("#errorMessage").text("Une erreur est survenue.")
                     $("#errorMessage").show()
@@ -671,7 +682,7 @@
             <p id="companySelectLabel">Quelle entreprise vous correspond ?</p>
             <select id="companySelect"></select>
         
-            <button id="confirmButton" type="button" style="display: none;">Se téléporter</button>
+            <button id="confirmButton" type="button" style="display: none;">Rejoindre le stand</button>
         </form>
       </div>
 </body>
