@@ -2757,6 +2757,33 @@
                  "width":72.5,
                  "x":6528,
                  "y":2624
+                }, 
+                {
+                 "class":"area",
+                 "height":619.6667,
+                 "id":112,
+                 "name":"nord",
+                 "properties":[
+                        {
+                         "name":"jitsiRoom",
+                         "type":"string",
+                         "value":"nord"
+                        }, 
+                        {
+                         "name":"jitsiTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"jitsiTriggerMessage",
+                         "type":"string",
+                         "value":"Appuyez sur ESCAPE ou touchez ici pour entrer en r\u00e9union"
+                        }],
+                 "rotation":0,
+                 "visible":true,
+                 "width":918,
+                 "x":6204,
+                 "y":1108
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -3087,7 +3114,7 @@
          "y":0
         }],
  "nextlayerid":64,
- "nextobjectid":112,
+ "nextobjectid":113,
  "orientation":"orthogonal",
  "properties":[
         {
